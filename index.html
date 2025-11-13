@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -46,14 +46,7 @@
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 30px;
-        }
-
-        .canvas-container {
-            position: relative;
-            display: inline-block;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
+            text-align: center;
         }
 
         #canvas {
@@ -77,6 +70,7 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            overflow-y: auto;
         }
 
         .camera-modal.active {
@@ -86,14 +80,14 @@
         .camera-container {
             position: relative;
             max-width: 90%;
-            max-height: 80vh;
+            max-height: 70vh;
         }
 
         #video {
             width: 100%;
             max-width: 640px;
             border-radius: 10px;
-            transform: scaleX(-1); /* Mirror effect for selfie */
+            transform: scaleX(-1);
         }
 
         #capturedImage {
@@ -103,12 +97,17 @@
             border-radius: 10px;
         }
 
+        #captureCanvas {
+            display: none;
+        }
+
         .camera-controls {
             display: flex;
             gap: 15px;
             margin-top: 20px;
             justify-content: center;
             flex-wrap: wrap;
+            padding: 10px;
         }
 
         .camera-btn {
@@ -129,10 +128,6 @@
             color: white;
         }
 
-        .capture-btn:hover {
-            transform: scale(1.05);
-        }
-
         .use-photo-btn {
             background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
             color: white;
@@ -148,28 +143,38 @@
             color: white;
         }
 
-        .camera-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
         .switch-camera-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
 
-        /* Buttons */
-        .button-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+        .camera-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Action Buttons */
+        .action-section {
             margin-bottom: 25px;
         }
 
+        .action-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
         .btn {
-            padding: 14px 20px;
+            padding: 16px 24px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -177,149 +182,79 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .btn-primary {
+        .btn-camera {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
 
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        .btn-upload {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
         }
 
-        .btn-success {
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            color: white;
+        }
+
+        .btn-email {
+            background: linear-gradient(135deg, #ea4335 0%, #d32f2f 100%);
+            color: white;
+        }
+
+        .btn-download {
             background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
             color: white;
         }
 
-        .btn-success:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 176, 155, 0.4);
-        }
-
-        .btn-danger {
+        .btn-reset {
             background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
             color: white;
         }
 
-        .btn-danger:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        .btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
 
         .btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none !important;
         }
 
         input[type="file"] {
             display: none;
         }
 
-        /* Adjustments Panel */
-        .adjustments-panel {
-            background: #f8f9fa;
+        /* Share Section */
+        .share-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 25px;
+            display: none;
         }
 
-        .adjustments-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+        .share-section.active {
+            display: block;
         }
 
-        .adjustments-header h3 {
+        .share-section h3 {
             color: #333;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 20px;
         }
 
-        .auto-fit-btn {
-            padding: 8px 15px;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .auto-fit-btn:hover {
-            background: #218838;
-        }
-
-        .controls-grid {
+        .share-buttons {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .control-group {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .control-label {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            font-size: 14px;
-            color: #555;
-            font-weight: 500;
-        }
-
-        .control-value {
-            background: #667eea;
-            color: white;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .slider {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: #e0e0e0;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #667eea;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        .slider::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #667eea;
-            cursor: pointer;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
         }
 
         /* Loading */
@@ -355,6 +290,7 @@
             margin-bottom: 20px;
             border-radius: 10px;
             display: none;
+            font-weight: 500;
         }
 
         .status-message.success {
@@ -378,7 +314,6 @@
             display: block;
         }
 
-        /* Camera info text */
         .camera-info {
             color: white;
             text-align: center;
@@ -386,8 +321,27 @@
             font-size: 14px;
         }
 
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .info-box p {
+            color: #8b4513;
+            font-size: 15px;
+            margin: 8px 0;
+        }
+
+        .info-box strong {
+            color: #5d2e0f;
+        }
+
         /* Responsive */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .container {
                 padding: 15px;
             }
@@ -396,16 +350,14 @@
                 font-size: 1.5em;
             }
 
-            .button-row {
-                grid-template-columns: 1fr;
-            }
-
-            .controls-grid {
+            .button-grid,
+            .share-buttons {
                 grid-template-columns: 1fr;
             }
 
             .camera-controls {
                 flex-direction: column;
+                width: 100%;
             }
 
             .camera-btn {
@@ -417,83 +369,74 @@
 <body>
     <div class="container">
         <h1>📸 Digital Frame Photo Generator</h1>
-        <p class="subtitle">Take a selfie or upload a photo to place it in the digital frame</p>
+        <p class="subtitle">Take a selfie or upload a photo!</p>
+
+        <!-- Info Box -->
+        <div class="info-box">
+            <p><strong>✨ Perfect Circle Fit</strong></p>
+            <p>Your photo will be automatically centered in a perfect circle!</p>
+        </div>
 
         <!-- Status Message -->
         <div id="statusMessage" class="status-message"></div>
 
         <!-- Canvas -->
         <div class="canvas-wrapper">
-            <div class="canvas-container">
-                <canvas id="canvas"></canvas>
-            </div>
+            <canvas id="canvas"></canvas>
             <div class="loading" id="loading">
                 <div class="spinner"></div>
                 <p style="margin-top: 10px; color: #666;">Processing...</p>
             </div>
         </div>
 
-        <!-- Main Buttons -->
-        <div class="button-row">
-            <input type="file" id="fileInput" accept="image/*">
-            
-            <button class="btn btn-primary" id="openCameraBtn">
-                📷 Open Camera
-            </button>
-            
-            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
-                📁 Upload Photo
-            </button>
-            
-            <button class="btn btn-success" id="downloadBtn" disabled>
-                💾 Download
-            </button>
-            
-            <button class="btn btn-danger" id="resetBtn">
-                🔄 Reset
-            </button>
+        <!-- Upload Section -->
+        <div class="action-section">
+            <h3>📤 Upload Your Photo</h3>
+            <div class="button-grid">
+                <input type="file" id="fileInput" accept="image/*">
+                
+                <button class="btn btn-camera" id="openCameraBtn">
+                    📷 Take Selfie
+                </button>
+                
+                <button class="btn btn-upload" onclick="document.getElementById('fileInput').click()">
+                    📁 Upload Photo
+                </button>
+            </div>
         </div>
 
-        <!-- Adjustments -->
-        <div class="adjustments-panel" id="adjustmentsPanel" style="display: none;">
-            <div class="adjustments-header">
-                <h3>🎯 Fine-tune Your Photo</h3>
-                <button class="auto-fit-btn" onclick="autoFit()">✨ Auto Fit</button>
+        <!-- Share Section -->
+        <div class="share-section" id="shareSection">
+            <h3>📤 Share Your Framed Photo</h3>
+            <div class="share-buttons">
+                <button class="btn btn-whatsapp" id="shareWhatsAppBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    Share on WhatsApp
+                </button>
+                
+                <button class="btn btn-email" id="shareEmailBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                    Share via Email
+                </button>
+                
+                <button class="btn btn-download" id="downloadBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/>
+                    </svg>
+                    Download Image
+                </button>
             </div>
-            
-            <div class="controls-grid">
-                <div class="control-group">
-                    <div class="control-label">
-                        <span>↔️ Horizontal</span>
-                        <span class="control-value" id="xValue">0</span>
-                    </div>
-                    <input type="range" id="posX" class="slider" min="-200" max="200" value="0" oninput="updatePhoto()">
-                </div>
+        </div>
 
-                <div class="control-group">
-                    <div class="control-label">
-                        <span>↕️ Vertical</span>
-                        <span class="control-value" id="yValue">0</span>
-                    </div>
-                    <input type="range" id="posY" class="slider" min="-200" max="200" value="0" oninput="updatePhoto()">
-                </div>
-
-                <div class="control-group">
-                    <div class="control-label">
-                        <span>🔍 Zoom</span>
-                        <span class="control-value" id="scaleValue">100%</span>
-                    </div>
-                    <input type="range" id="scale" class="slider" min="50" max="200" value="100" oninput="updatePhoto()">
-                </div>
-
-                <div class="control-group">
-                    <div class="control-label">
-                        <span>🔄 Rotate</span>
-                        <span class="control-value" id="rotateValue">0°</span>
-                    </div>
-                    <input type="range" id="rotate" class="slider" min="-180" max="180" value="0" oninput="updatePhoto()">
-                </div>
-            </div>
+        <!-- Reset Button -->
+        <div class="button-grid">
+            <button class="btn btn-reset" id="resetBtn">
+                🔄 Start Over
+            </button>
         </div>
     </div>
 
@@ -502,7 +445,7 @@
         <div class="camera-container">
             <video id="video" autoplay playsinline></video>
             <img id="capturedImage" />
-            <canvas id="captureCanvas" style="display: none;"></canvas>
+            <canvas id="captureCanvas"></canvas>
         </div>
         <div class="camera-info" id="cameraInfo">Position yourself and click capture</div>
         <div class="camera-controls">
@@ -530,14 +473,11 @@
         // ========================================
         const CONFIG = {
             frameImage: 'digitalframe.png',
-            canvasWidth: 800,
-            canvasHeight: 800,
-            photoArea: {
-                x: null,
-                y: null,
-                width: null,
-                height: null,
-                shape: 'auto'
+            // Auto-detect circle - will be set when frame loads
+            circle: {
+                centerX: null,
+                centerY: null,
+                radius: null
             }
         };
 
@@ -547,16 +487,11 @@
         let canvas, ctx;
         let frameImg = null;
         let userPhoto = null;
-        let photoSettings = {
-            x: 0,
-            y: 0,
-            scale: 1,
-            rotation: 0
-        };
+        let finalImageDataUrl = null;
 
         // Camera variables
         let videoStream = null;
-        let currentFacingMode = 'user'; // 'user' for front camera, 'environment' for back
+        let currentFacingMode = 'user';
         let capturedImageData = null;
 
         // ========================================
@@ -565,9 +500,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             canvas = document.getElementById('canvas');
             ctx = canvas.getContext('2d');
-            
-            canvas.width = CONFIG.canvasWidth;
-            canvas.height = CONFIG.canvasHeight;
             
             loadFrameImage();
             bindEvents();
@@ -581,20 +513,15 @@
             frameImg = new Image();
             
             frameImg.onload = function() {
-                CONFIG.canvasWidth = frameImg.width;
-                CONFIG.canvasHeight = frameImg.height;
-                canvas.width = CONFIG.canvasWidth;
-                canvas.height = CONFIG.canvasHeight;
+                canvas.width = frameImg.width;
+                canvas.height = frameImg.height;
                 
-                if (!CONFIG.photoArea.x) {
-                    CONFIG.photoArea = {
-                        x: CONFIG.canvasWidth * 0.25,
-                        y: CONFIG.canvasHeight * 0.25,
-                        width: CONFIG.canvasWidth * 0.5,
-                        height: CONFIG.canvasHeight * 0.5,
-                        shape: CONFIG.photoArea.shape || 'auto'
-                    };
-                }
+                // Auto-detect circle in center
+                CONFIG.circle = {
+                    centerX: frameImg.width / 2,
+                    centerY: frameImg.height / 2,
+                    radius: Math.min(frameImg.width, frameImg.height) * 0.35
+                };
                 
                 drawCanvas();
                 showLoading(false);
@@ -603,42 +530,10 @@
             
             frameImg.onerror = function() {
                 showLoading(false);
-                showStatus('Error loading frame image. Using default.', 'error');
-                createDefaultFrame();
+                showStatus('Error loading frame image. Please check if digitalframe.png exists.', 'error');
             };
             
             frameImg.src = CONFIG.frameImage;
-        }
-
-        function createDefaultFrame() {
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = CONFIG.canvasWidth;
-            tempCanvas.height = CONFIG.canvasHeight;
-            const tempCtx = tempCanvas.getContext('2d');
-            
-            const gradient = tempCtx.createLinearGradient(0, 0, tempCanvas.width, tempCanvas.height);
-            gradient.addColorStop(0, '#4a90e2');
-            gradient.addColorStop(1, '#7b68ee');
-            tempCtx.fillStyle = gradient;
-            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-            
-            tempCtx.strokeStyle = '#ffffff';
-            tempCtx.lineWidth = 20;
-            tempCtx.strokeRect(40, 40, tempCanvas.width - 80, tempCanvas.height - 80);
-            
-            tempCtx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-            tempCtx.fillRect(
-                CONFIG.canvasWidth * 0.25,
-                CONFIG.canvasHeight * 0.25,
-                CONFIG.canvasWidth * 0.5,
-                CONFIG.canvasHeight * 0.5
-            );
-            
-            frameImg = new Image();
-            frameImg.onload = function() {
-                drawCanvas();
-            };
-            frameImg.src = tempCanvas.toDataURL();
         }
 
         // ========================================
@@ -651,12 +546,11 @@
             modal.classList.add('active');
             
             try {
-                // Request camera access
                 const constraints = {
                     video: {
                         facingMode: currentFacingMode,
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
+                        width: { ideal: 1920 },
+                        height: { ideal: 1080 }
                     },
                     audio: false
                 };
@@ -681,28 +575,22 @@
             const usePhotoBtn = document.getElementById('usePhotoBtn');
             const cameraInfo = document.getElementById('cameraInfo');
             
-            // Set canvas size to match video
             captureCanvas.width = video.videoWidth;
             captureCanvas.height = video.videoHeight;
             
             const captureCtx = captureCanvas.getContext('2d');
             
-            // Flip horizontally for selfie (mirror effect)
+            // Mirror effect for selfie
             captureCtx.translate(captureCanvas.width, 0);
             captureCtx.scale(-1, 1);
-            
-            // Draw video frame to canvas
             captureCtx.drawImage(video, 0, 0);
             
-            // Get image data
             capturedImageData = captureCanvas.toDataURL('image/png');
             
-            // Show captured image
             capturedImage.src = capturedImageData;
             capturedImage.style.display = 'block';
             video.style.display = 'none';
             
-            // Update buttons
             captureBtn.style.display = 'none';
             retakeBtn.style.display = 'inline-flex';
             usePhotoBtn.style.display = 'inline-flex';
@@ -718,11 +606,9 @@
             const usePhotoBtn = document.getElementById('usePhotoBtn');
             const cameraInfo = document.getElementById('cameraInfo');
             
-            // Show video again
             video.style.display = 'block';
             capturedImage.style.display = 'none';
             
-            // Update buttons
             captureBtn.style.display = 'inline-flex';
             retakeBtn.style.display = 'none';
             usePhotoBtn.style.display = 'none';
@@ -737,26 +623,21 @@
             const img = new Image();
             img.onload = function() {
                 userPhoto = img;
-                document.getElementById('downloadBtn').disabled = false;
-                document.getElementById('adjustmentsPanel').style.display = 'block';
-                
-                autoFit();
+                drawPhotoInCircle();
                 closeCamera();
-                showStatus('Photo captured successfully! Adjust as needed.', 'success');
+                showStatus('Photo captured and perfectly fitted in the circle!', 'success');
+                document.getElementById('shareSection').classList.add('active');
             };
             img.src = capturedImageData;
         }
 
         async function switchCamera() {
-            // Toggle between front and back camera
             currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
             
-            // Close current stream
             if (videoStream) {
                 videoStream.getTracks().forEach(track => track.stop());
             }
             
-            // Reopen with new facing mode
             await openCamera();
         }
 
@@ -765,19 +646,16 @@
             const video = document.getElementById('video');
             const capturedImage = document.getElementById('capturedImage');
             
-            // Stop video stream
             if (videoStream) {
                 videoStream.getTracks().forEach(track => track.stop());
                 videoStream = null;
             }
             
-            // Reset UI
             video.srcObject = null;
             video.style.display = 'block';
             capturedImage.style.display = 'none';
             capturedImageData = null;
             
-            // Reset buttons
             document.getElementById('captureBtn').style.display = 'inline-flex';
             document.getElementById('retakeBtn').style.display = 'none';
             document.getElementById('usePhotoBtn').style.display = 'none';
@@ -798,6 +676,8 @@
             
             document.getElementById('fileInput').addEventListener('change', handleFileSelect);
             document.getElementById('downloadBtn').addEventListener('click', downloadImage);
+            document.getElementById('shareWhatsAppBtn').addEventListener('click', shareToWhatsApp);
+            document.getElementById('shareEmailBtn').addEventListener('click', shareToEmail);
             document.getElementById('resetBtn').addEventListener('click', resetAll);
         }
 
@@ -820,13 +700,10 @@
                 const img = new Image();
                 img.onload = function() {
                     userPhoto = img;
-                    document.getElementById('downloadBtn').disabled = false;
-                    document.getElementById('adjustmentsPanel').style.display = 'block';
-                    
-                    autoFit();
-                    
+                    drawPhotoInCircle();
                     showLoading(false);
-                    showStatus('Photo uploaded successfully! Adjust as needed.', 'success');
+                    showStatus('Photo uploaded and perfectly fitted in the circle!', 'success');
+                    document.getElementById('shareSection').classList.add('active');
                 };
                 img.src = event.target.result;
             };
@@ -836,115 +713,177 @@
         }
 
         // ========================================
-        // CANVAS DRAWING
+        // DRAWING FUNCTION - CIRCULAR PHOTO
         // ========================================
+        function drawPhotoInCircle() {
+            if (!userPhoto || !frameImg) return;
+            
+            drawCanvas();
+            finalImageDataUrl = canvas.toDataURL('image/png');
+        }
+
         function drawCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            ctx.fillStyle = 'white';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
+            // Draw user photo in circle FIRST (behind frame)
             if (userPhoto) {
                 ctx.save();
                 
-                const centerX = CONFIG.photoArea.x + CONFIG.photoArea.width / 2;
-                const centerY = CONFIG.photoArea.y + CONFIG.photoArea.height / 2;
+                // Create circular clipping path
+                ctx.beginPath();
+                ctx.arc(
+                    CONFIG.circle.centerX, 
+                    CONFIG.circle.centerY, 
+                    CONFIG.circle.radius,
+                    0, 
+                    Math.PI * 2
+                );
+                ctx.closePath();
+                ctx.clip();
                 
-                ctx.translate(centerX + photoSettings.x, centerY + photoSettings.y);
-                ctx.rotate(photoSettings.rotation * Math.PI / 180);
-                
-                const scale = photoSettings.scale;
-                const drawWidth = CONFIG.photoArea.width * scale;
-                const drawHeight = CONFIG.photoArea.height * scale;
-                
+                // Calculate dimensions to cover the circle area
+                const diameter = CONFIG.circle.radius * 2;
                 const photoAspect = userPhoto.width / userPhoto.height;
-                const areaAspect = CONFIG.photoArea.width / CONFIG.photoArea.height;
                 
-                let finalWidth, finalHeight;
+                let drawWidth, drawHeight;
                 
-                if (photoAspect > areaAspect) {
-                    finalWidth = drawWidth;
-                    finalHeight = drawWidth / photoAspect;
+                // Scale to cover the circle completely
+                if (photoAspect > 1) {
+                    // Landscape photo
+                    drawHeight = diameter;
+                    drawWidth = drawHeight * photoAspect;
                 } else {
-                    finalHeight = drawHeight;
-                    finalWidth = drawHeight * photoAspect;
+                    // Portrait or square photo
+                    drawWidth = diameter;
+                    drawHeight = drawWidth / photoAspect;
                 }
                 
+                // Ensure coverage
+                if (drawWidth < diameter) {
+                    drawWidth = diameter;
+                    drawHeight = drawWidth / photoAspect;
+                }
+                if (drawHeight < diameter) {
+                    drawHeight = diameter;
+                    drawWidth = drawHeight * photoAspect;
+                }
+                
+                // Center the photo in the circle
+                const photoX = CONFIG.circle.centerX - drawWidth / 2;
+                const photoY = CONFIG.circle.centerY - drawHeight / 2;
+                
+                // Draw the photo
                 ctx.drawImage(
                     userPhoto,
-                    -finalWidth / 2,
-                    -finalHeight / 2,
-                    finalWidth,
-                    finalHeight
+                    photoX,
+                    photoY,
+                    drawWidth,
+                    drawHeight
                 );
                 
                 ctx.restore();
             }
             
+            // Draw frame ON TOP
             if (frameImg) {
                 ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
             }
         }
 
         // ========================================
-        // PHOTO ADJUSTMENTS
-        // ========================================
-        function updatePhoto() {
-            photoSettings.x = parseInt(document.getElementById('posX').value);
-            photoSettings.y = parseInt(document.getElementById('posY').value);
-            photoSettings.scale = parseInt(document.getElementById('scale').value) / 100;
-            photoSettings.rotation = parseInt(document.getElementById('rotate').value);
-            
-            document.getElementById('xValue').textContent = photoSettings.x;
-            document.getElementById('yValue').textContent = photoSettings.y;
-            document.getElementById('scaleValue').textContent = Math.round(photoSettings.scale * 100) + '%';
-            document.getElementById('rotateValue').textContent = photoSettings.rotation + '°';
-            
-            drawCanvas();
-        }
-
-        function autoFit() {
-            if (!userPhoto) return;
-            
-            photoSettings.x = 0;
-            photoSettings.y = 0;
-            photoSettings.rotation = 0;
-            photoSettings.scale = 1.1;
-            
-            document.getElementById('posX').value = 0;
-            document.getElementById('posY').value = 0;
-            document.getElementById('scale').value = photoSettings.scale * 100;
-            document.getElementById('rotate').value = 0;
-            
-            updatePhoto();
-        }
-
-        // ========================================
-        // DOWNLOAD & RESET
+        // SHARING FUNCTIONS
         // ========================================
         function downloadImage() {
+            if (!finalImageDataUrl) {
+                finalImageDataUrl = canvas.toDataURL('image/png');
+            }
+            
             const link = document.createElement('a');
             link.download = `framed-photo-${Date.now()}.png`;
-            link.href = canvas.toDataURL('image/png');
+            link.href = finalImageDataUrl;
             link.click();
             showStatus('Image downloaded successfully!', 'success');
         }
 
+        async function shareToWhatsApp() {
+            if (!finalImageDataUrl) {
+                showStatus('Please upload or capture a photo first', 'error');
+                return;
+            }
+            
+            try {
+                const blob = await (await fetch(finalImageDataUrl)).blob();
+                const file = new File([blob], 'framed-photo.png', { type: 'image/png' });
+                
+                if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'My Framed Photo',
+                        text: 'Check out my photo in this beautiful frame!'
+                    });
+                    showStatus('Shared successfully!', 'success');
+                } else {
+                    const text = encodeURIComponent('Check out my framed photo!');
+                    const whatsappUrl = `https://wa.me/?text=${text}`;
+                    window.open(whatsappUrl, '_blank');
+                    downloadImage();
+                    showStatus('Opening WhatsApp... Image downloaded. Please attach it manually.', 'info');
+                }
+            } catch (error) {
+                const text = encodeURIComponent('Check out my framed photo!');
+                const whatsappUrl = `https://wa.me/?text=${text}`;
+                window.open(whatsappUrl, '_blank');
+                downloadImage();
+                showStatus('Opening WhatsApp... Image downloaded. Please attach manually.', 'info');
+            }
+        }
+
+        async function shareToEmail() {
+            if (!finalImageDataUrl) {
+                showStatus('Please upload or capture a photo first', 'error');
+                return;
+            }
+            
+            try {
+                const blob = await (await fetch(finalImageDataUrl)).blob();
+                const file = new File([blob], 'framed-photo.png', { type: 'image/png' });
+                
+                if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'My Framed Photo',
+                        text: 'Check out my photo in this beautiful frame!'
+                    });
+                    showStatus('Shared successfully!', 'success');
+                } else {
+                    const subject = encodeURIComponent('My Framed Photo');
+                    const body = encodeURIComponent('Check out my photo in this beautiful frame!\n\n(Image attached separately)');
+                    const mailtoUrl = `mailto:?subject=${subject}&body=${body}`;
+                    window.location.href = mailtoUrl;
+                    downloadImage();
+                    showStatus('Opening email client... Image downloaded. Please attach it to your email.', 'info');
+                }
+            } catch (error) {
+                const subject = encodeURIComponent('My Framed Photo');
+                const body = encodeURIComponent('Check out my photo in this beautiful frame!');
+                const mailtoUrl = `mailto:?subject=${subject}&body=${body}`;
+                window.location.href = mailtoUrl;
+                downloadImage();
+                showStatus('Opening email client... Image downloaded. Please attach manually.', 'info');
+            }
+        }
+
+        // ========================================
+        // RESET FUNCTION
+        // ========================================
         function resetAll() {
             userPhoto = null;
-            photoSettings = { x: 0, y: 0, scale: 1, rotation: 0 };
+            finalImageDataUrl = null;
             
-            document.getElementById('posX').value = 0;
-            document.getElementById('posY').value = 0;
-            document.getElementById('scale').value = 100;
-            document.getElementById('rotate').value = 0;
+            document.getElementById('shareSection').classList.remove('active');
             
-            document.getElementById('adjustmentsPanel').style.display = 'none';
-            document.getElementById('downloadBtn').disabled = true;
-            
-            updatePhoto();
             drawCanvas();
-            showStatus('Reset complete. Take a new photo to begin.', 'info');
+            showStatus('Reset complete. Upload a new photo to begin.', 'info');
         }
 
         // ========================================
