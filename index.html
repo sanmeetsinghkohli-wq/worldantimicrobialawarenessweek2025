@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Frame Photo Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* Canvas Container */
+        .canvas-wrapper {
+            background: #f5f5f5;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .canvas-container {
+            position: relative;
+            display: inline-block;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        #canvas {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: white;
+        }
+
+        /* Camera Modal */
+        .camera-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .camera-modal.active {
+            display: flex;
+        }
+
+        .camera-container {
+            position: relative;
+            max-width: 90%;
+            max-height: 80vh;
+        }
+
+        #video {
+            width: 100%;
+            max-width: 640px;
+            border-radius: 10px;
+            transform: scaleX(-1); /* Mirror effect for selfie */
+        }
+
+        #capturedImage {
+            display: none;
+            max-width: 640px;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .camera-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .camera-btn {
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .capture-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .capture-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .use-photo-btn {
+            background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+            color: white;
+        }
+
+        .retake-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+        }
+
+        .close-camera-btn {
+            background: #666;
+            color: white;
+        }
+
+        .camera-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .switch-camera-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        /* Buttons */
+        .button-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+            color: white;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 176, 155, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Adjustments Panel */
+        .adjustments-panel {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .adjustments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .adjustments-header h3 {
+            color: #333;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .auto-fit-btn {
+            padding: 8px 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .auto-fit-btn:hover {
+            background: #218838;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .control-group {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .control-value {
+            background: #667eea;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e0e0e0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Status Message */
+        .status-message {
+            text-align: center;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .status-message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            display: block;
+        }
+
+        /* Camera info text */
+        .camera-info {
+            color: white;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .button-row {
+                grid-template-columns: 1fr;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .camera-controls {
+                flex-direction: column;
+            }
+
+            .camera-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📸 Digital Frame Photo Generator</h1>
+        <p class="subtitle">Take a selfie or upload a photo to place it in the digital frame</p>
+
+        <!-- Status Message -->
+        <div id="statusMessage" class="status-message"></div>
+
+        <!-- Canvas -->
+        <div class="canvas-wrapper">
+            <div class="canvas-container">
+                <canvas id="canvas"></canvas>
+            </div>
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="margin-top: 10px; color: #666;">Processing...</p>
+            </div>
+        </div>
+
+        <!-- Main Buttons -->
+        <div class="button-row">
+            <input type="file" id="fileInput" accept="image/*">
+            
+            <button class="btn btn-primary" id="openCameraBtn">
+                📷 Open Camera
+            </button>
+            
+            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                📁 Upload Photo
+            </button>
+            
+            <button class="btn btn-success" id="downloadBtn" disabled>
+                💾 Download
+            </button>
+            
+            <button class="btn btn-danger" id="resetBtn">
+                🔄 Reset
+            </button>
+        </div>
+
+        <!-- Adjustments -->
+        <div class="adjustments-panel" id="adjustmentsPanel" style="display: none;">
+            <div class="adjustments-header">
+                <h3>🎯 Fine-tune Your Photo</h3>
+                <button class="auto-fit-btn" onclick="autoFit()">✨ Auto Fit</button>
+            </div>
+            
+            <div class="controls-grid">
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>↔️ Horizontal</span>
+                        <span class="control-value" id="xValue">0</span>
+                    </div>
+                    <input type="range" id="posX" class="slider" min="-200" max="200" value="0" oninput="updatePhoto()">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>↕️ Vertical</span>
+                        <span class="control-value" id="yValue">0</span>
+                    </div>
+                    <input type="range" id="posY" class="slider" min="-200" max="200" value="0" oninput="updatePhoto()">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>🔍 Zoom</span>
+                        <span class="control-value" id="scaleValue">100%</span>
+                    </div>
+                    <input type="range" id="scale" class="slider" min="50" max="200" value="100" oninput="updatePhoto()">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>🔄 Rotate</span>
+                        <span class="control-value" id="rotateValue">0°</span>
+                    </div>
+                    <input type="range" id="rotate" class="slider" min="-180" max="180" value="0" oninput="updatePhoto()">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camera Modal -->
+    <div class="camera-modal" id="cameraModal">
+        <div class="camera-container">
+            <video id="video" autoplay playsinline></video>
+            <img id="capturedImage" />
+            <canvas id="captureCanvas" style="display: none;"></canvas>
+        </div>
+        <div class="camera-info" id="cameraInfo">Position yourself and click capture</div>
+        <div class="camera-controls">
+            <button class="camera-btn capture-btn" id="captureBtn">
+                📸 Capture Photo
+            </button>
+            <button class="camera-btn retake-btn" id="retakeBtn" style="display: none;">
+                🔄 Retake
+            </button>
+            <button class="camera-btn use-photo-btn" id="usePhotoBtn" style="display: none;">
+                ✅ Use This Photo
+            </button>
+            <button class="camera-btn switch-camera-btn" id="switchCameraBtn">
+                🔄 Switch Camera
+            </button>
+            <button class="camera-btn close-camera-btn" id="closeCameraBtn">
+                ❌ Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // CONFIGURATION
+        // ========================================
+        const CONFIG = {
+            frameImage: 'digitalframe.png',
+            canvasWidth: 800,
+            canvasHeight: 800,
+            photoArea: {
+                x: null,
+                y: null,
+                width: null,
+                height: null,
+                shape: 'auto'
+            }
+        };
+
+        // ========================================
+        // GLOBAL VARIABLES
+        // ========================================
+        let canvas, ctx;
+        let frameImg = null;
+        let userPhoto = null;
+        let photoSettings = {
+            x: 0,
+            y: 0,
+            scale: 1,
+            rotation: 0
+        };
+
+        // Camera variables
+        let videoStream = null;
+        let currentFacingMode = 'user'; // 'user' for front camera, 'environment' for back
+        let capturedImageData = null;
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            canvas = document.getElementById('canvas');
+            ctx = canvas.getContext('2d');
+            
+            canvas.width = CONFIG.canvasWidth;
+            canvas.height = CONFIG.canvasHeight;
+            
+            loadFrameImage();
+            bindEvents();
+        });
+
+        // ========================================
+        // FRAME LOADING
+        // ========================================
+        function loadFrameImage() {
+            showLoading(true);
+            frameImg = new Image();
+            
+            frameImg.onload = function() {
+                CONFIG.canvasWidth = frameImg.width;
+                CONFIG.canvasHeight = frameImg.height;
+                canvas.width = CONFIG.canvasWidth;
+                canvas.height = CONFIG.canvasHeight;
+                
+                if (!CONFIG.photoArea.x) {
+                    CONFIG.photoArea = {
+                        x: CONFIG.canvasWidth * 0.25,
+                        y: CONFIG.canvasHeight * 0.25,
+                        width: CONFIG.canvasWidth * 0.5,
+                        height: CONFIG.canvasHeight * 0.5,
+                        shape: CONFIG.photoArea.shape || 'auto'
+                    };
+                }
+                
+                drawCanvas();
+                showLoading(false);
+                showStatus('Frame loaded! Take a photo or upload one to begin.', 'info');
+            };
+            
+            frameImg.onerror = function() {
+                showLoading(false);
+                showStatus('Error loading frame image. Using default.', 'error');
+                createDefaultFrame();
+            };
+            
+            frameImg.src = CONFIG.frameImage;
+        }
+
+        function createDefaultFrame() {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = CONFIG.canvasWidth;
+            tempCanvas.height = CONFIG.canvasHeight;
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            const gradient = tempCtx.createLinearGradient(0, 0, tempCanvas.width, tempCanvas.height);
+            gradient.addColorStop(0, '#4a90e2');
+            gradient.addColorStop(1, '#7b68ee');
+            tempCtx.fillStyle = gradient;
+            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+            
+            tempCtx.strokeStyle = '#ffffff';
+            tempCtx.lineWidth = 20;
+            tempCtx.strokeRect(40, 40, tempCanvas.width - 80, tempCanvas.height - 80);
+            
+            tempCtx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            tempCtx.fillRect(
+                CONFIG.canvasWidth * 0.25,
+                CONFIG.canvasHeight * 0.25,
+                CONFIG.canvasWidth * 0.5,
+                CONFIG.canvasHeight * 0.5
+            );
+            
+            frameImg = new Image();
+            frameImg.onload = function() {
+                drawCanvas();
+            };
+            frameImg.src = tempCanvas.toDataURL();
+        }
+
+        // ========================================
+        // CAMERA FUNCTIONS
+        // ========================================
+        async function openCamera() {
+            const modal = document.getElementById('cameraModal');
+            const video = document.getElementById('video');
+            
+            modal.classList.add('active');
+            
+            try {
+                // Request camera access
+                const constraints = {
+                    video: {
+                        facingMode: currentFacingMode,
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                };
+                
+                videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = videoStream;
+                
+                showStatus('Camera ready! Position yourself and click capture.', 'success');
+            } catch (error) {
+                console.error('Camera error:', error);
+                showStatus('Unable to access camera. Please check permissions.', 'error');
+                closeCamera();
+            }
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById('video');
+            const captureCanvas = document.getElementById('captureCanvas');
+            const capturedImage = document.getElementById('capturedImage');
+            const captureBtn = document.getElementById('captureBtn');
+            const retakeBtn = document.getElementById('retakeBtn');
+            const usePhotoBtn = document.getElementById('usePhotoBtn');
+            const cameraInfo = document.getElementById('cameraInfo');
+            
+            // Set canvas size to match video
+            captureCanvas.width = video.videoWidth;
+            captureCanvas.height = video.videoHeight;
+            
+            const captureCtx = captureCanvas.getContext('2d');
+            
+            // Flip horizontally for selfie (mirror effect)
+            captureCtx.translate(captureCanvas.width, 0);
+            captureCtx.scale(-1, 1);
+            
+            // Draw video frame to canvas
+            captureCtx.drawImage(video, 0, 0);
+            
+            // Get image data
+            capturedImageData = captureCanvas.toDataURL('image/png');
+            
+            // Show captured image
+            capturedImage.src = capturedImageData;
+            capturedImage.style.display = 'block';
+            video.style.display = 'none';
+            
+            // Update buttons
+            captureBtn.style.display = 'none';
+            retakeBtn.style.display = 'inline-flex';
+            usePhotoBtn.style.display = 'inline-flex';
+            
+            cameraInfo.textContent = 'Like this photo? Use it or retake.';
+        }
+
+        function retakePhoto() {
+            const video = document.getElementById('video');
+            const capturedImage = document.getElementById('capturedImage');
+            const captureBtn = document.getElementById('captureBtn');
+            const retakeBtn = document.getElementById('retakeBtn');
+            const usePhotoBtn = document.getElementById('usePhotoBtn');
+            const cameraInfo = document.getElementById('cameraInfo');
+            
+            // Show video again
+            video.style.display = 'block';
+            capturedImage.style.display = 'none';
+            
+            // Update buttons
+            captureBtn.style.display = 'inline-flex';
+            retakeBtn.style.display = 'none';
+            usePhotoBtn.style.display = 'none';
+            
+            cameraInfo.textContent = 'Position yourself and click capture';
+            capturedImageData = null;
+        }
+
+        function usePhoto() {
+            if (!capturedImageData) return;
+            
+            const img = new Image();
+            img.onload = function() {
+                userPhoto = img;
+                document.getElementById('downloadBtn').disabled = false;
+                document.getElementById('adjustmentsPanel').style.display = 'block';
+                
+                autoFit();
+                closeCamera();
+                showStatus('Photo captured successfully! Adjust as needed.', 'success');
+            };
+            img.src = capturedImageData;
+        }
+
+        async function switchCamera() {
+            // Toggle between front and back camera
+            currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
+            
+            // Close current stream
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+            }
+            
+            // Reopen with new facing mode
+            await openCamera();
+        }
+
+        function closeCamera() {
+            const modal = document.getElementById('cameraModal');
+            const video = document.getElementById('video');
+            const capturedImage = document.getElementById('capturedImage');
+            
+            // Stop video stream
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                videoStream = null;
+            }
+            
+            // Reset UI
+            video.srcObject = null;
+            video.style.display = 'block';
+            capturedImage.style.display = 'none';
+            capturedImageData = null;
+            
+            // Reset buttons
+            document.getElementById('captureBtn').style.display = 'inline-flex';
+            document.getElementById('retakeBtn').style.display = 'none';
+            document.getElementById('usePhotoBtn').style.display = 'none';
+            
+            modal.classList.remove('active');
+        }
+
+        // ========================================
+        // EVENT BINDINGS
+        // ========================================
+        function bindEvents() {
+            document.getElementById('openCameraBtn').addEventListener('click', openCamera);
+            document.getElementById('captureBtn').addEventListener('click', capturePhoto);
+            document.getElementById('retakeBtn').addEventListener('click', retakePhoto);
+            document.getElementById('usePhotoBtn').addEventListener('click', usePhoto);
+            document.getElementById('switchCameraBtn').addEventListener('click', switchCamera);
+            document.getElementById('closeCameraBtn').addEventListener('click', closeCamera);
+            
+            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+            document.getElementById('downloadBtn').addEventListener('click', downloadImage);
+            document.getElementById('resetBtn').addEventListener('click', resetAll);
+        }
+
+        // ========================================
+        // FILE UPLOAD
+        // ========================================
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.startsWith('image/')) {
+                showStatus('Please select an image file', 'error');
+                return;
+            }
+            
+            showLoading(true);
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    userPhoto = img;
+                    document.getElementById('downloadBtn').disabled = false;
+                    document.getElementById('adjustmentsPanel').style.display = 'block';
+                    
+                    autoFit();
+                    
+                    showLoading(false);
+                    showStatus('Photo uploaded successfully! Adjust as needed.', 'success');
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+            
+            e.target.value = '';
+        }
+
+        // ========================================
+        // CANVAS DRAWING
+        // ========================================
+        function drawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            if (userPhoto) {
+                ctx.save();
+                
+                const centerX = CONFIG.photoArea.x + CONFIG.photoArea.width / 2;
+                const centerY = CONFIG.photoArea.y + CONFIG.photoArea.height / 2;
+                
+                ctx.translate(centerX + photoSettings.x, centerY + photoSettings.y);
+                ctx.rotate(photoSettings.rotation * Math.PI / 180);
+                
+                const scale = photoSettings.scale;
+                const drawWidth = CONFIG.photoArea.width * scale;
+                const drawHeight = CONFIG.photoArea.height * scale;
+                
+                const photoAspect = userPhoto.width / userPhoto.height;
+                const areaAspect = CONFIG.photoArea.width / CONFIG.photoArea.height;
+                
+                let finalWidth, finalHeight;
+                
+                if (photoAspect > areaAspect) {
+                    finalWidth = drawWidth;
+                    finalHeight = drawWidth / photoAspect;
+                } else {
+                    finalHeight = drawHeight;
+                    finalWidth = drawHeight * photoAspect;
+                }
+                
+                ctx.drawImage(
+                    userPhoto,
+                    -finalWidth / 2,
+                    -finalHeight / 2,
+                    finalWidth,
+                    finalHeight
+                );
+                
+                ctx.restore();
+            }
+            
+            if (frameImg) {
+                ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        // ========================================
+        // PHOTO ADJUSTMENTS
+        // ========================================
+        function updatePhoto() {
+            photoSettings.x = parseInt(document.getElementById('posX').value);
+            photoSettings.y = parseInt(document.getElementById('posY').value);
+            photoSettings.scale = parseInt(document.getElementById('scale').value) / 100;
+            photoSettings.rotation = parseInt(document.getElementById('rotate').value);
+            
+            document.getElementById('xValue').textContent = photoSettings.x;
+            document.getElementById('yValue').textContent = photoSettings.y;
+            document.getElementById('scaleValue').textContent = Math.round(photoSettings.scale * 100) + '%';
+            document.getElementById('rotateValue').textContent = photoSettings.rotation + '°';
+            
+            drawCanvas();
+        }
+
+        function autoFit() {
+            if (!userPhoto) return;
+            
+            photoSettings.x = 0;
+            photoSettings.y = 0;
+            photoSettings.rotation = 0;
+            photoSettings.scale = 1.1;
+            
+            document.getElementById('posX').value = 0;
+            document.getElementById('posY').value = 0;
+            document.getElementById('scale').value = photoSettings.scale * 100;
+            document.getElementById('rotate').value = 0;
+            
+            updatePhoto();
+        }
+
+        // ========================================
+        // DOWNLOAD & RESET
+        // ========================================
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = `framed-photo-${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showStatus('Image downloaded successfully!', 'success');
+        }
+
+        function resetAll() {
+            userPhoto = null;
+            photoSettings = { x: 0, y: 0, scale: 1, rotation: 0 };
+            
+            document.getElementById('posX').value = 0;
+            document.getElementById('posY').value = 0;
+            document.getElementById('scale').value = 100;
+            document.getElementById('rotate').value = 0;
+            
+            document.getElementById('adjustmentsPanel').style.display = 'none';
+            document.getElementById('downloadBtn').disabled = true;
+            
+            updatePhoto();
+            drawCanvas();
+            showStatus('Reset complete. Take a new photo to begin.', 'info');
+        }
+
+        // ========================================
+        // UTILITY FUNCTIONS
+        // ========================================
+        function showLoading(show) {
+            document.getElementById('loading').classList.toggle('active', show);
+        }
+
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = 'status-message ' + type;
+            
+            setTimeout(() => {
+                statusEl.className = 'status-message';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
