@@ -23,32 +23,33 @@
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(255, 140, 0, 0.1);
             padding: 30px;
-            border: 1px solid #e0e0e0;
+            border: 2px solid #ff8c00;
         }
 
         h1 {
             text-align: center;
-            color: #333;
+            color: #ff8c00;
             margin-bottom: 30px;
             font-size: 2em;
         }
 
         /* Canvas Container */
         .canvas-wrapper {
-            background: #f5f5f5;
+            background: #fff5e6;
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 30px;
             text-align: center;
+            border: 2px solid #ffa500;
         }
 
         #canvas {
             max-width: 100%;
             height: auto;
             border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.2);
             background: white;
         }
 
@@ -84,6 +85,7 @@
             max-width: 500px;
             border-radius: 10px;
             transform: scaleX(-1);
+            border: 3px solid #ff8c00;
         }
 
         #capturedImage {
@@ -91,6 +93,7 @@
             max-width: 500px;
             width: 100%;
             border-radius: 10px;
+            border: 3px solid #ff8c00;
         }
 
         #captureCanvas {
@@ -121,17 +124,17 @@
         }
 
         .capture-btn {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #ff8c00 0%, #ff6600 100%);
             color: white;
         }
 
         .use-photo-btn {
-            background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+            background: linear-gradient(135deg, #ff8c00 0%, #ffa500 100%);
             color: white;
         }
 
         .retake-btn {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            background: linear-gradient(135deg, #ff6600 0%, #ff4500 100%);
             color: white;
         }
 
@@ -141,13 +144,13 @@
         }
 
         .switch-camera-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%);
             color: white;
         }
 
         .camera-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.4);
         }
 
         /* Action Buttons */
@@ -156,10 +159,11 @@
         }
 
         .action-section h3 {
-            color: #333;
+            color: #ff8c00;
             margin-bottom: 15px;
             font-size: 18px;
             text-align: center;
+            font-weight: 600;
         }
 
         .button-grid {
@@ -180,32 +184,32 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(255, 140, 0, 0.2);
         }
 
         .btn-camera {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ff8c00 0%, #ff6600 100%);
             color: white;
         }
 
         .btn-upload {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%);
             color: white;
         }
 
         .btn-share {
-            background: linear-gradient(135deg, #45b649 0%, #2e7d32 100%);
+            background: linear-gradient(135deg, #ff8c00 0%, #ffa500 100%);
             color: white;
         }
 
         .btn-reset {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            background: linear-gradient(135deg, #ff6600 0%, #ff4500 100%);
             color: white;
         }
 
         .btn:hover:not(:disabled) {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.3);
         }
 
         .btn:disabled {
@@ -216,6 +220,90 @@
 
         input[type="file"] {
             display: none;
+        }
+
+        /* Adjustment Controls */
+        .adjustment-section {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe0b2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            display: none;
+            border: 2px solid #ffa500;
+        }
+
+        .adjustment-section.active {
+            display: block;
+        }
+
+        .adjustment-section h3 {
+            color: #ff8c00;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .adjustment-controls {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .slider-group {
+            margin-bottom: 20px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .slider-value {
+            background: #ff8c00;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #ffd9a0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ff8c00;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(255, 140, 0, 0.3);
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 8px rgba(255, 140, 0, 0.5);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ff8c00;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 5px rgba(255, 140, 0, 0.3);
         }
 
         /* Share Section */
@@ -229,10 +317,11 @@
         }
 
         .share-section h3 {
-            color: #333;
+            color: #ff8c00;
             margin-bottom: 15px;
             font-size: 18px;
             text-align: center;
+            font-weight: 600;
         }
 
         /* Loading */
@@ -250,8 +339,8 @@
             display: inline-block;
             width: 40px;
             height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+            border: 4px solid #ffe0b2;
+            border-top: 4px solid #ff8c00;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -272,23 +361,23 @@
         }
 
         .status-message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: #fff5e6;
+            color: #ff8c00;
+            border: 2px solid #ffa500;
             display: block;
         }
 
         .status-message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: #ffe0e0;
+            color: #ff4500;
+            border: 2px solid #ff6600;
             display: block;
         }
 
         .status-message.info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
+            background: #fff5e6;
+            color: #ff8c00;
+            border: 2px solid #ffa500;
             display: block;
         }
 
@@ -359,7 +448,7 @@
             <canvas id="canvas"></canvas>
             <div class="loading" id="loading">
                 <div class="spinner"></div>
-                <p style="margin-top: 10px; color: #666;">Processing...</p>
+                <p style="margin-top: 10px; color: #ff8c00;">Processing...</p>
             </div>
         </div>
 
@@ -376,6 +465,36 @@
                 <button class="btn btn-upload" onclick="document.getElementById('fileInput').click()">
                     📁 Upload Photo
                 </button>
+            </div>
+        </div>
+
+        <!-- Adjustment Section -->
+        <div class="adjustment-section" id="adjustmentSection">
+            <h3>🎯 Adjust Your Photo</h3>
+            <div class="adjustment-controls">
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>📏 Photo Size</span>
+                        <span class="slider-value" id="scaleValue">100%</span>
+                    </div>
+                    <input type="range" id="photoScale" class="slider" min="50" max="200" value="100" oninput="updatePhotoAdjustments()">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>↕️ Vertical Position</span>
+                        <span class="slider-value" id="posYValue">0</span>
+                    </div>
+                    <input type="range" id="photoY" class="slider" min="-200" max="200" value="0" oninput="updatePhotoAdjustments()">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>↔️ Horizontal Position</span>
+                        <span class="slider-value" id="posXValue">0</span>
+                    </div>
+                    <input type="range" id="photoX" class="slider" min="-200" max="200" value="0" oninput="updatePhotoAdjustments()">
+                </div>
             </div>
         </div>
 
@@ -448,6 +567,13 @@
         let frameImg = null;
         let userPhoto = null;
         let finalImageDataUrl = null;
+
+        // Photo adjustment settings
+        let photoAdjustments = {
+            scale: 1,
+            offsetX: 0,
+            offsetY: 0
+        };
 
         // Camera variables
         let videoStream = null;
@@ -583,9 +709,11 @@
             const img = new Image();
             img.onload = function() {
                 userPhoto = img;
+                resetAdjustments();
                 drawPhotoInCircle();
                 closeCamera();
-                showStatus('Photo added successfully!', 'success');
+                showStatus('Photo captured! Adjust position and size as needed.', 'success');
+                document.getElementById('adjustmentSection').classList.add('active');
                 document.getElementById('shareSection').classList.add('active');
             };
             img.src = capturedImageData;
@@ -658,9 +786,11 @@
                 const img = new Image();
                 img.onload = function() {
                     userPhoto = img;
+                    resetAdjustments();
                     drawPhotoInCircle();
                     showLoading(false);
-                    showStatus('Photo uploaded successfully!', 'success');
+                    showStatus('Photo uploaded! Adjust position and size as needed.', 'success');
+                    document.getElementById('adjustmentSection').classList.add('active');
                     document.getElementById('shareSection').classList.add('active');
                 };
                 img.src = event.target.result;
@@ -668,6 +798,37 @@
             reader.readAsDataURL(file);
             
             e.target.value = '';
+        }
+
+        // ========================================
+        // PHOTO ADJUSTMENTS
+        // ========================================
+        function updatePhotoAdjustments() {
+            photoAdjustments.scale = parseInt(document.getElementById('photoScale').value) / 100;
+            photoAdjustments.offsetX = parseInt(document.getElementById('photoX').value);
+            photoAdjustments.offsetY = parseInt(document.getElementById('photoY').value);
+            
+            document.getElementById('scaleValue').textContent = Math.round(photoAdjustments.scale * 100) + '%';
+            document.getElementById('posXValue').textContent = photoAdjustments.offsetX;
+            document.getElementById('posYValue').textContent = photoAdjustments.offsetY;
+            
+            drawPhotoInCircle();
+        }
+
+        function resetAdjustments() {
+            photoAdjustments = {
+                scale: 1,
+                offsetX: 0,
+                offsetY: 0
+            };
+            
+            document.getElementById('photoScale').value = 100;
+            document.getElementById('photoX').value = 0;
+            document.getElementById('photoY').value = 0;
+            
+            document.getElementById('scaleValue').textContent = '100%';
+            document.getElementById('posXValue').textContent = '0';
+            document.getElementById('posYValue').textContent = '0';
         }
 
         // ========================================
@@ -699,7 +860,7 @@
                 ctx.closePath();
                 ctx.clip();
                 
-                // Calculate dimensions to cover the circle area
+                // Calculate dimensions to cover the circle area with adjustments
                 const diameter = CONFIG.circle.radius * 2;
                 const photoAspect = userPhoto.width / userPhoto.height;
                 
@@ -708,27 +869,27 @@
                 // Scale to cover the circle completely
                 if (photoAspect > 1) {
                     // Landscape photo
-                    drawHeight = diameter;
+                    drawHeight = diameter * photoAdjustments.scale;
                     drawWidth = drawHeight * photoAspect;
                 } else {
                     // Portrait or square photo
-                    drawWidth = diameter;
+                    drawWidth = diameter * photoAdjustments.scale;
                     drawHeight = drawWidth / photoAspect;
                 }
                 
                 // Ensure coverage
-                if (drawWidth < diameter) {
-                    drawWidth = diameter;
+                if (drawWidth < diameter * photoAdjustments.scale) {
+                    drawWidth = diameter * photoAdjustments.scale;
                     drawHeight = drawWidth / photoAspect;
                 }
-                if (drawHeight < diameter) {
-                    drawHeight = diameter;
+                if (drawHeight < diameter * photoAdjustments.scale) {
+                    drawHeight = diameter * photoAdjustments.scale;
                     drawWidth = drawHeight * photoAspect;
                 }
                 
-                // Center the photo in the circle
-                const photoX = CONFIG.circle.centerX - drawWidth / 2;
-                const photoY = CONFIG.circle.centerY - drawHeight / 2;
+                // Center the photo in the circle with adjustments
+                const photoX = CONFIG.circle.centerX - drawWidth / 2 + photoAdjustments.offsetX;
+                const photoY = CONFIG.circle.centerY - drawHeight / 2 + photoAdjustments.offsetY;
                 
                 // Draw the photo
                 ctx.drawImage(
@@ -793,7 +954,9 @@
         function resetAll() {
             userPhoto = null;
             finalImageDataUrl = null;
+            resetAdjustments();
             
+            document.getElementById('adjustmentSection').classList.remove('active');
             document.getElementById('shareSection').classList.remove('active');
             
             drawCanvas();
